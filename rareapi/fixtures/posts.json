@@ -1,0 +1,28 @@
+[
+    {
+        "model": "rareapi.post",
+        "pk": 1,
+        "fields": {
+            "rare_user_id": 1,
+            "category_id": 1,
+            "title": "Getting Started with Django",
+            "publication_date": "2025-06-12",
+            "image_url": "https://example.com/django-post.jpg",
+            "content": "Django is a high-level Python web framework...",
+            "approved": true
+        }
+    },
+    {
+        "model": "rareapi.post",
+        "pk": 2,
+        "fields": {
+            "rare_user_id": 2,
+            "category_id": 1,
+            "title": "Python Best Practices",
+            "publication_date": "2025-06-12",
+            "image_url": "https://example.com/python-post.jpg",
+            "content": "When writing Python code, it's important to follow...",
+            "approved": true
+        }
+    }
+]
