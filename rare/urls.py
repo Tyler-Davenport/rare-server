@@ -18,10 +18,12 @@ from django.urls import path, include
 from rest_framework import routers
 from rareapi.views import PostView
 from rareapi.views.category import CategoryViewSet
+from rareapi.views.comment import CommentViewSet
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'posts', PostView, 'post')
 router.register(r'categories', CategoryViewSet, basename='category')
+router.register(r'comments', CommentViewSet, basename='comment')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
