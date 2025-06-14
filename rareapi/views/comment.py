@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework import serializers, status
 from rareapi.models import Comment
 from rareapi.serializers import CommentSerializer
+from rareapi.models.user import User
+from rareapi.models import Post
 
 class CommentViewSet(ViewSet):
     def list(self, request):
@@ -19,12 +21,19 @@ class CommentViewSet(ViewSet):
         """Handle POST requests to create a new comment"""
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid():
-            comment = Comment.objects.create(
-                author_id=serializer.validated_data['author_id'],
-                post_id=serializer.validated_data['post_id'],
-                content=serializer.validated_data['content']
-            )
-            return Response(CommentSerializer(comment).data, status=status.HTTP_201_CREATED)
+            try:
+                author = User.objects.get(pk=serializer.validated_data['author_id'])
+                post = Post.objects.get(pk=serializer.validated_data['post_id'])
+                comment = Comment.objects.create(
+                    author=author,
+                    post=post,
+                    content=serializer.validated_data['content']
+                )
+                return Response(CommentSerializer(comment).data, status=status.HTTP_201_CREATED)
+            except User.DoesNotExist:
+                return Response({"error": "Author not found."}, status=status.HTTP_400_BAD_REQUEST)
+            except Post.DoesNotExist:
+                return Response({"error": "Post not found."}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):

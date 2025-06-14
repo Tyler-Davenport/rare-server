@@ -1,0 +1,30 @@
+[
+  {
+    "model": "rareapi.user",
+    "pk": 3,
+    "fields": {
+      "first_name": "Alice",
+      "last_name": "Johnson",
+      "bio": "Avid reader and aspiring novelist",
+      "profile_image_url": "https://example.com/alice.jpg",
+      "email": "alice@example.com",
+      "created_on": "2025-06-14",
+      "active": true,
+      "is_staff": false
+    }
+  },
+  {
+    "model": "rareapi.user",
+    "pk": 4,
+    "fields": {
+      "first_name": "Bob",
+      "last_name": "Williams",
+      "bio": "Tech entrepreneur and coder",
+      "profile_image_url": "https://example.com/bob.jpg",
+      "email": "bob@example.com",
+      "created_on": "2025-06-14",
+      "active": true,
+      "is_staff": true
+    }
+  }
+]
