@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
+from rest_framework.authtoken.views import obtain_auth_token
 from rareapi.views import PostView
 from rareapi.views.category import CategoryViewSet
 from rareapi.views.comment import CommentViewSet
+from rareapi.views.auth_view import RegisterView, UserListView
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'posts', PostView, 'post')
@@ -27,7 +29,10 @@ router.register(r'comments', CommentViewSet, basename='comment')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path('auth/register/', RegisterView.as_view(), name='register'),
+    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    path('users/', UserListView.as_view(), name='user-list'),
 ]
 
 urlpatterns += router.urls
