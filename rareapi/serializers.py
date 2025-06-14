@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
     """JSON serializer for user registration and responses"""
     password = serializers.CharField(write_only=True, required=True)
     created_on = serializers.DateField(read_only=True, format="%Y-%m-%d") # Explicitly define and format
-    
+
     class Meta:
         """Meta class for UserSerializer"""
         model = User
@@ -18,7 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
             'password': {'write_only': True},
             'email': {'required': True}
         }
-    
+
     def create(self, validated_data):
         user = User.objects.create_user(
             email=validated_data['email'],
@@ -40,6 +40,9 @@ class PostSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     """JSON serializer for comments"""
+    author_id = serializers.IntegerField()
+    post_id = serializers.IntegerField()
+
     class Meta:
         """Meta class for CommentSerializer"""
         model = Comment
