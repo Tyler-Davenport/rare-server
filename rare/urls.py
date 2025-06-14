@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
-from rareapi.views import PostView
+from rareapi.views.post_view import PostView
 from rareapi.views.category import CategoryViewSet
 from rareapi.views.comment import CommentViewSet
 from rareapi.views.auth_view import RegisterView, UserListView
@@ -35,4 +35,3 @@ urlpatterns = [
     path('users/', UserListView.as_view(), name='user-list'),
 ]
 
-urlpatterns += router.urls

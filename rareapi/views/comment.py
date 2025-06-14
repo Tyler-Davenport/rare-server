@@ -1,12 +1,15 @@
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rareapi.models import Comment
 from rareapi.serializers import CommentSerializer
 from rareapi.models.user import User
 from rareapi.models import Post
 
 class CommentViewSet(ViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def list(self, request):
         """Handle GET requests to retrieve all comments"""
         comments = Comment.objects.all()
@@ -37,12 +40,14 @@ class CommentViewSet(ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
+        # TODO: Add check to ensure request.user is the author of the comment
         comment = Comment.objects.get(pk=pk)
         comment.content = request.data.get('content', comment.content)
         comment.save()
         return Response(CommentSerializer(comment).data, status=status.HTTP_200_OK)
 
     def destroy(self, request, pk=None):
+        # TODO: Add check to ensure request.user is the author of the comment
         comment = Comment.objects.get(pk=pk)
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

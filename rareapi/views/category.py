@@ -1,6 +1,7 @@
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rareapi.models import Category
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -9,6 +10,8 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ('id', 'label')
 
 class CategoryViewSet(ViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def list(self, request):
         """Handle GET requests to retrieve all categories"""
         categories = Category.objects.all()
