@@ -40,8 +40,8 @@ class PostView(ViewSet):
     category = Category.objects.get(pk=request.data["category_id"])
     
     post = Post.objects.create(
-      rare_user = rare_user,
-      category = category,
+      rare_user_id = rare_user,
+      category_id = category,
       title = request.data["title"],
       publication_date = request.data["publication_date"], # replace with datetime.now or equivalent for date?
       image_url = request.data["image_url"],
