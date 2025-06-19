@@ -40,12 +40,17 @@ class PostSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     """JSON serializer for comments"""
-    author_id = serializers.IntegerField()
-    post_id = serializers.IntegerField()
+    author = serializers.SerializerMethodField()
+
+    def get_author(self, obj):
+        return {
+            "first_name": obj.author.first_name,
+            "last_name": obj.author.last_name
+        }
 
     class Meta:
         """Meta class for CommentSerializer"""
         model = Comment
-        fields = ('id', 'author_id', 'post_id', 'content', 'created_on')
+        fields = ('id', 'author', 'post_id', 'content', 'created_on')
         depth = 1  # Include related user and post data in the serialized output
 
