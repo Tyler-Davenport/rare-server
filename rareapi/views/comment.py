@@ -26,7 +26,11 @@ class CommentViewSet(ViewSet):
 
     def create(self, request):
         """Handle POST requests to create a new comment"""
+        print(f"Comment creation request data: {request.data}")
         serializer = CommentSerializer(data=request.data)
+        print(f"Serializer is_valid: {serializer.is_valid()}")
+        if not serializer.is_valid():
+            print(f"Serializer errors: {serializer.errors}")
         if serializer.is_valid():
             try:
                 author = User.objects.get(pk=serializer.validated_data["author_id"])
