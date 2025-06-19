@@ -1,13 +1,14 @@
-from rest_framework.viewsets import ViewSet
-from rest_framework.response import Response
+from rareapi.models import Category, Post, User
+from rareapi.serializers import PostSerializer
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from rareapi.models import Post, User, Category
-from rareapi.serializers import PostSerializer
+from rest_framework.response import Response
+from rest_framework.viewsets import ViewSet
 
 
 class PostView(ViewSet):
     """RARE API posts view"""
+
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def retrieve(self, request, pk):
@@ -21,7 +22,10 @@ class PostView(ViewSet):
             serializer = PostSerializer(post)
             return Response(serializer.data)
         except Post.DoesNotExist as ex:
-            return Response({'No post exists with specified ID': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                {"No post exists with specified ID": ex.args[0]},
+                status=status.HTTP_404_NOT_FOUND,
+            )
 
     def list(self, request):
         """Handles GET requests for all post objects
@@ -63,13 +67,9 @@ class PostView(ViewSet):
         post = Post.objects.get(pk=pk)
 
         # TODO: Check if request.user is the author of the post before allowing update
-        # TODO: Avoid changing author via request.data["rare_user_id"]
-        # post_rare_user = User.objects.get(pk=request.data["rare_user_id"])
-        # post.rare_user = post_rare_user
-
         post_category = Category.objects.get(pk=request.data["category_id"])
 
-        post.category = post_category # Make sure this aligns with model field name (category or category_id)
+        post.category_id = post_category
         post.title = request.data["title"]
         post.publication_date = request.data["publication_date"]
         post.image_url = request.data["image_url"]
@@ -88,4 +88,3 @@ class PostView(ViewSet):
         # TODO: Check if request.user is the author of the post before allowing delete
         post.delete()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
-    
