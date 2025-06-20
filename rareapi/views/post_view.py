@@ -24,11 +24,15 @@ class PostView(ViewSet):
             return Response({'No post exists with specified ID': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
 
     def list(self, request):
-        """Handles GET requests for all post objects
+        """Handles GET requests for all post objects or filters by categoryId if provided
 
         Returns:
             Response -- JSON serialized list of posts"""
-        posts = Post.objects.all()
+        category_id = request.query_params.get('categoryId', None)
+        if category_id:
+            posts = Post.objects.filter(category_id=category_id)
+        else:
+            posts = Post.objects.all()
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
@@ -88,4 +92,3 @@ class PostView(ViewSet):
         # TODO: Check if request.user is the author of the post before allowing delete
         post.delete()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
-    
